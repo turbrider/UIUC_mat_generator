@@ -1,0 +1,26 @@
+function [weight,fit_val]=find_weight(m,up,down)
+global n_weight
+global method foil_up foil_down
+method = m;
+foil_up = up;
+foil_down = down;
+
+input_intial = 0.1.*ones(1,n_weight); 
+input_intial(1:n_weight/2) = -1*input_intial(1:n_weight/2);
+down_b = -1.*ones(1,n_weight);
+up_b   = ones(1,n_weight);
+
+option_minmax=optimoptions('fmincon',...
+                         'Display','iter',...              
+                         'PlotFcn',{@optimplotfval,@optimplotx},...
+                         'Algorithm','interior-point',...
+                         'MaxIter',50,...
+                         'TolCon',1e-1,...
+                         'TolX',1e-3,...
+                         'TolFun',8e-3 ...
+                          );           
+    
+[weight,fit_val] = fmincon(@fitnessfun_local_approx,input_intial,[],[],[],[],down_b,up_b,[],option_minmax);
+
+
+end

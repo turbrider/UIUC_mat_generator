@@ -1,0 +1,1 @@
+Some airfoil in the database has been modified slightly to make the interpolation correct.
